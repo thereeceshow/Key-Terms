@@ -137,7 +137,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-start justify-between p-24">
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6 w-full">
         <Card className="col-span-full flex flex-col justify-start mb-3 bg-slate-500">
           <div className="grid grid-cols-6 pt-2">
             <div className="col-span-1 text-white">Filter by Keyword:</div>

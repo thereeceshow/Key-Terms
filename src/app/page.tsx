@@ -20,8 +20,8 @@ import { randomInt } from "crypto";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState();
-  const [renderData, setRenderData] = useState("");
+  const [data, setData] = useState<{ term: string; def: string; sprint: string; }[]>([]);
+  const [renderData, setRenderData] = useState<{ term: string; def: string; sprint: string; }[]>([]);
   const [searchTxt, setSearchTxt] = useState("");
   const [sprintCount, setSprintCount] = useState(16);
   // const [activeButton, setActiveButton] = useState(0);
@@ -40,7 +40,8 @@ export default function Home() {
       .then((res) => res.text())
       .then((v) => Papa.parse(v))
       .then((data) => {
-        const dataToObjArr = data.data.map((el) => {
+        const parsedData = data as { data: string[][]}
+        const dataToObjArr = parsedData.data.map((el) => {
           return {
             term: el[0],
             def: el[1],
@@ -72,18 +73,18 @@ export default function Home() {
               s.toLowerCase().includes(searchTxt.toLocaleLowerCase())
             );
           })
-          .filter((el) => sprintFilter(el.sprint))
+          .filter((el) => sprintFilter(Number(el.sprint)))
       );
     } else {
       setRenderData(data);
     }
   }, [data, searchTxt, sprintLimit, filters]);
 
-  const toogleCurrent = () => {
+  const toggleCurrent = () => {
     setFilters({...filters, current: !filters.current})
   }
 
-  const toogleHighlight = () => {
+  const toggleHighlight = () => {
     setFilters({...filters, highlight: !filters.highlight})
   }
 
@@ -103,8 +104,9 @@ export default function Home() {
           (value <= sprintLimit ? "active" : "border-dashed border-y border-x-2")
         }`}
         value={value.toString()}
-        onClick={(e) => {
-          setSprintLimit(e.target.value);
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          const newValue = Number(e.currentTarget.value)
+          setSprintLimit(newValue);
         }}
       >
         {rendValue}
@@ -118,10 +120,6 @@ export default function Home() {
       tempArr.push(<Button value={i} key={i} />);
     }
     return tempArr;
-  };
-
-  const buttonClick = (tar) => {
-    setSprintLimit(tar.value);
   };
 
   if (loading) {
@@ -165,12 +163,12 @@ export default function Home() {
             </div>
           </div>
             <div className="flex justify-center gap-12 w-full mt-8">
-              <button className={`bg-slate-600 border-2 text-white p-2 rounded-lg ${filters.highlight && 'active'}`} onClick={toogleHighlight}>
+              <button className={`bg-slate-600 border-2 text-white p-2 rounded-lg ${filters.highlight && 'active'}`} onClick={toggleHighlight}>
               <div className="col-span-1">
                   {filters.highlight ? 'Highlight None' : 'Highlight Selected Sprint Terms'}
                 </div>
               </button>
-              <button className={`bg-slate-600 border-2 text-white p-2 rounded-lg ${filters.current && 'active'}`} onClick={toogleCurrent}>
+              <button className={`bg-slate-600 border-2 text-white p-2 rounded-lg ${filters.current && 'active'}`} onClick={toggleCurrent}>
               <div className="col-span-1">
                   {filters.current ?  'Show All Previous Sprints' : 'Show Only Selected Sprint'}
                 </div>
@@ -180,7 +178,7 @@ export default function Home() {
         {renderData &&
           renderData.map((el, key) => {
             return (
-              <Card className={`px-3 ${filters.highlight && el.sprint == sprintLimit ? "bg-green-200" : ""}`} key={key}>
+              <Card className={`px-3 ${filters.highlight && Number(el.sprint) === sprintLimit ? "bg-green-200" : ""}`} key={key}>
                 <Title className="font-bold">{el.term}</Title>
                 <Divider />
                 <Text className="my-3 ms-2 italic">{el.def}</Text>

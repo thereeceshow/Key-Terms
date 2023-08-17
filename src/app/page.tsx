@@ -81,7 +81,6 @@ export default function Home() {
   }
 
   const toogleHighlight = () => {
-    console.log(filters)
     setFilters({...filters, highlight: !filters.highlight})
   }
 
@@ -97,7 +96,8 @@ export default function Home() {
     return (
       <button
         className={`align-bottom rounded-full box-content aspect-square w-7 ${
-          value == sprintLimit ? "active" : "border-dashed border-y border-x-2"
+          filters.current ? (value == sprintLimit ? "active" : "border-dashed border-y border-x-2") :
+          (value <= sprintLimit ? "active" : "border-dashed border-y border-x-2")
         }`}
         value={value.toString()}
         onClick={(e) => {

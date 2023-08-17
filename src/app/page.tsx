@@ -164,12 +164,12 @@ export default function Home() {
             <div className="flex justify-center gap-12 w-full mt-8">
               <button className={`bg-slate-600 border-2 text-white p-2 rounded-lg ${filters.highlight && 'active'}`} onClick={toogleHighlight}>
               <div className="col-span-1">
-                  Highlight Current Sprint
+                  {filters.highlight ? 'Highlight None' : 'Highlight Selected Sprint Terms'}
                 </div>
               </button>
               <button className={`bg-slate-600 border-2 text-white p-2 rounded-lg ${filters.current && 'active'}`} onClick={toogleCurrent}>
               <div className="col-span-1">
-                  Current Sprint Only
+                  {filters.current ?  'Show All Previous Sprints' : 'Show Only Selected Sprint'}
                 </div>
               </button>
             </div>

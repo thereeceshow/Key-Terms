@@ -80,11 +80,11 @@ export default function Home() {
     }
   }, [data, searchTxt, sprintLimit, filters]);
 
-  const toogleCurrent = () => {
+  const toggleCurrent = () => {
     setFilters({...filters, current: !filters.current})
   }
 
-  const toogleHighlight = () => {
+  const toggleHighlight = () => {
     setFilters({...filters, highlight: !filters.highlight})
   }
 
@@ -163,12 +163,12 @@ export default function Home() {
             </div>
           </div>
             <div className="flex justify-center gap-12 w-full mt-8">
-              <button className={`bg-slate-600 border-2 text-white p-2 rounded-lg ${filters.highlight && 'active'}`} onClick={toogleHighlight}>
+              <button className={`bg-slate-600 border-2 text-white p-2 rounded-lg ${filters.highlight && 'active'}`} onClick={toggleHighlight}>
               <div className="col-span-1">
                   {filters.highlight ? 'Highlight None' : 'Highlight Selected Sprint Terms'}
                 </div>
               </button>
-              <button className={`bg-slate-600 border-2 text-white p-2 rounded-lg ${filters.current && 'active'}`} onClick={toogleCurrent}>
+              <button className={`bg-slate-600 border-2 text-white p-2 rounded-lg ${filters.current && 'active'}`} onClick={toggleCurrent}>
               <div className="col-span-1">
                   {filters.current ?  'Show All Previous Sprints' : 'Show Only Selected Sprint'}
                 </div>

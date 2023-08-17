@@ -20,7 +20,7 @@ import { randomInt } from "crypto";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState();
   const [renderData, setRenderData] = useState("");
   const [searchTxt, setSearchTxt] = useState("");
   const [sprintCount, setSprintCount] = useState(16);
@@ -77,7 +77,7 @@ export default function Home() {
     } else {
       setRenderData(data);
     }
-  }, [data, searchTxt, sprintLimit, filters.current]);
+  }, [data, searchTxt, sprintLimit, filters]);
 
   const toogleCurrent = () => {
     setFilters({...filters, current: !filters.current})

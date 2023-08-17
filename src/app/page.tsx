@@ -57,6 +57,9 @@ export default function Home() {
   useEffect(() => {
     if (searchTxt || sprintLimit != 0) {
       const sprintFilter = (value: number) => {
+        if (sprintLimit == 0) {
+          return true
+        }
         if (filters.current == false) {
           return value <= sprintLimit
         } else {

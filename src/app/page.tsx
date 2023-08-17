@@ -24,7 +24,7 @@ export default function Home() {
   const [renderData, setRenderData] = useState("");
   const [searchTxt, setSearchTxt] = useState("");
   const [sprintCount, setSprintCount] = useState(16);
-  const [activeButton, setActiveButton] = useState(0);
+  // const [activeButton, setActiveButton] = useState(0);
   const [sprintLimit, setSprintLimit] = useState(0);
   const [filters, setFilters] = useState({ highlight: false, current: false})
 
@@ -65,7 +65,6 @@ export default function Home() {
       setRenderData(
         data
           .filter((el) => {
-            console.log(`searchText useEffect ${el}`);
             return Object.values(el).some((s) =>
               s.toLowerCase().includes(searchTxt.toLocaleLowerCase())
             );
@@ -78,7 +77,6 @@ export default function Home() {
   }, [data, searchTxt, sprintLimit, filters.current]);
 
   const toogleCurrent = () => {
-    console.log(filters)
     setFilters({...filters, current: !filters.current})
   }
 

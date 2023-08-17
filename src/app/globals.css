@@ -25,3 +25,10 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+@layer components {
+  .active {
+    @apply border-red-500 border outline-2 outline-offset-2 outline-green-500 outline ring-inset ring-tremor-ring ring-2 font-semibold;
+}
+
+}

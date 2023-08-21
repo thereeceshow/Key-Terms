@@ -143,7 +143,7 @@ export default function Home() {
       <Select
         value={sprintLimit.toString()}
         placeholder={multiSprint}
-        onValueChange={(x) => {
+        onValueChange={(x: string | number) => {
           if (x == "All") x = 0
           console.log(`this is x ${x}`)
           setSprintLimit(Number(x))
@@ -169,7 +169,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-start justify-between p-1 md:p-24">
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-1 md:gap-4 lg:gap-6 w-full">
         <Card className="col-span-full flex flex-col justify-start mb-3 bg-slate-500">
-          <div className="flex flex-row justify-center md:justify-start items-center align-text-middle border border-b-2 border-0 border-slate-400">
+          <div className="flex flex-row justify-center md:justify-start items-center align-text-middle border-0 border-b-2 border-slate-400">
             <Image
               src={badge}
               alt="C.O.D.E. Icon"

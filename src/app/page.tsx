@@ -1,7 +1,7 @@
 "use client";
 
 import Papa from "papaparse";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   Text,
@@ -9,14 +9,17 @@ import {
   Title,
   TextInput,
   ProgressBar,
-  ButtonProps,
   Subtitle,
+  Select,
+  SelectItem,
 } from "@tremor/react";
 import { SearchIcon } from "@heroicons/react/solid";
 import { validateHeaderValue } from "http";
 import { arrayBuffer } from "stream/consumers";
 import { constants } from "http2";
 import { randomInt } from "crypto";
+import Image from "next/image";
+import badge from './badge.png'
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -24,7 +27,6 @@ export default function Home() {
   const [renderData, setRenderData] = useState<{ term: string; def: string; sprint: string; }[]>([]);
   const [searchTxt, setSearchTxt] = useState("");
   const [sprintCount, setSprintCount] = useState(16);
-  // const [activeButton, setActiveButton] = useState(0);
   const [sprintLimit, setSprintLimit] = useState(0);
   const [filters, setFilters] = useState({ highlight: false, current: false})
 
@@ -122,6 +124,36 @@ export default function Home() {
     return tempArr;
   };
 
+  const SprintDropDownItems = () => {
+    let tempArr = [];
+    for (let i: number = 0; i <= sprintCount; i++) {
+      tempArr.push(
+        <SelectItem value={i == 0 ? "All" : i.toString()} key={i}></SelectItem>
+        );
+        console.log(sprintLimit)
+    }
+    return tempArr;
+  }
+
+  const singleSprint = sprintLimit == 0 ? `All Sprints` : `Sprint ${sprintLimit}`
+  const multiSprint = sprintLimit > 1 && !filters.current ? `Sprints 1 through ${sprintLimit}` : singleSprint
+
+  const SprintDropDownList = () => {
+    return (
+      <Select
+        value={sprintLimit.toString()}
+        placeholder={multiSprint}
+        onValueChange={(x: string | number) => {
+          if (x == "All") x = 0
+          console.log(`this is x ${x}`)
+          setSprintLimit(Number(x))
+          return x
+          }}>
+        <SprintDropDownItems />
+      </Select>
+    )
+  }
+
   if (loading) {
     return (
       <div className="h-screen flex justify-center place-items-center place-content-center">
@@ -134,22 +166,30 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-start justify-between p-24">
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6 w-full">
+    <main className="flex min-h-screen flex-col items-start justify-between p-1 md:p-24">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-1 md:gap-4 lg:gap-6 w-full">
         <Card className="col-span-full flex flex-col justify-start mb-3 bg-slate-500">
-          <div className="grid grid-cols-6 pt-2">
-            <div className="col-span-1 text-white">Filter by Keyword:</div>
+          <div className="flex flex-row justify-center md:justify-start items-center align-text-middle border-0 border-b-2 border-slate-400">
+            <Image
+              src={badge}
+              alt="C.O.D.E. Icon"
+              height={60}
+              />
+              <Title className="text-white align-text-middle">C.O.D.E. - Key Terms</Title>
+          </div>
+          <div className="grid grid-cols-6 pt-8">
+            <div className="col-span-6 text-white">Filter by Keyword:</div>
             <TextInput
-              className="col-span-5 me-6"
+              className="col-span-6 mt-2"
               value={searchTxt}
               icon={SearchIcon}
               placeholder="Search..."
               onChange={(e) => setSearchTxt(e.target.value)}
             />
-            <div className="col-span-1 mt-5 text-white text-bottom">
-              Filter by Sprint
+            <div className="col-span-6 mt-5 text-white text-bottom">
+              Filter by Sprint:
             </div>
-            <div className="col-span-5 mt-5 text-white w-full">
+            <div className="col-span-6 mt-5 text-white w-full hidden md:block">
               <div className="flex justify-between">
                 <SprintButtons />
               </div>
@@ -161,14 +201,17 @@ export default function Home() {
                 />
               </div>
             </div>
+            <div className="md:hidden col-span-6">
+              <SprintDropDownList />
+            </div>
           </div>
-            <div className="flex justify-center gap-12 w-full mt-8">
-              <button className={`bg-slate-600 border-2 text-white p-2 rounded-lg ${filters.highlight && 'active'}`} onClick={toggleHighlight}>
+            <div className="flex md:justify-center gap-3 md:gap-10 w-full mt-8">
+              <button className={`w-full md:w-1/2 max-w-md bg-slate-600 border-2 text-white p-2 rounded-lg ${filters.highlight && 'active'}`} onClick={toggleHighlight}>
               <div className="col-span-1">
                   {filters.highlight ? 'Highlight None' : 'Highlight Selected Sprint Terms'}
                 </div>
               </button>
-              <button className={`bg-slate-600 border-2 text-white p-2 rounded-lg ${filters.current && 'active'}`} onClick={toggleCurrent}>
+              <button className={`w-full md:w-1/2 max-w-md  bg-slate-600 border-2 text-white p-2 rounded-lg ${filters.current && 'active'}`} onClick={toggleCurrent}>
               <div className="col-span-1">
                   {filters.current ?  'Show All Previous Sprints' : 'Show Only Selected Sprint'}
                 </div>

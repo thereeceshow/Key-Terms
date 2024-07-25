@@ -124,16 +124,19 @@ export default function Home() {
     return tempArr;
   };
 
-  const SprintDropDownItems = () => {
-    let tempArr = [];
-    for (let i: number = 0; i <= sprintCount; i++) {
-      tempArr.push(
-        <SelectItem value={i == 0 ? "All" : i.toString()} key={i}></SelectItem>
-        );
-        console.log(sprintLimit)
-    }
-    return tempArr;
-  }
+  // const SprintDropDownItems = () => {
+  //   let tempArr = [];
+  //   for (let i: number = 0; i <= sprintCount; i++) {
+  //     const value = i === 0 ? "All" : i.toString();
+  //     tempArr.push(
+  //       <SelectItem value={value} key={i}>
+  //         {value}
+  //       </SelectItem>
+  //       );
+  //       console.log(sprintLimit)
+  //   }
+  //   return tempArr;
+  // }
 
   const singleSprint = sprintLimit == 0 ? `All Sprints` : `Sprint ${sprintLimit}`
   const multiSprint = sprintLimit > 1 && !filters.current ? `Sprints 1 through ${sprintLimit}` : singleSprint
@@ -147,9 +150,9 @@ export default function Home() {
           if (x == "All") x = 0
           console.log(`this is x ${x}`)
           setSprintLimit(Number(x))
-          return x
-          }}>
-        <SprintDropDownItems />
+          }}
+          >
+        {/* <SprintDropDownItems /> */}
       </Select>
     )
   }
